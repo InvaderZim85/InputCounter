@@ -1,0 +1,93 @@
+﻿<mah:MetroWindow
+    x:Class="InputCounter.Ui.View.DataWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:InputCounter.Ui.View"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:InputCounter.Ui.ViewModel"
+    Title="Input data"
+    Width="600"
+    Height="450"
+    mah:DialogParticipation.Register="{Binding}"
+    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+    BorderThickness="1"
+    Loaded="DataWindow_OnLoaded"
+    TitleCharacterCasing="Normal"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:DataWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
+            <TabItem Header="Keyboard clicks">
+                <DataGrid IsReadOnly="True" ItemsSource="{Binding KeyboardClickCount}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Day, StringFormat={}{0:dd.MM.yyyy}}"
+                            Header="Day" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Count, StringFormat={}{0:N0}}"
+                            Header="Key" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Mouse clicks">
+                <DataGrid IsReadOnly="True" ItemsSource="{Binding MouseClickCount}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Day, StringFormat={}{0:dd.MM.yyyy}}"
+                            Header="Day" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding LeftCount, StringFormat={}{0:N0}}"
+                            Header="Left" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding RightCount, StringFormat={}{0:N0}}"
+                            Header="Right" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Used keys">
+                <DataGrid IsReadOnly="True" ItemsSource="{Binding KeyList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Key}"
+                            Header="Key" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding KeyCode}"
+                            Header="Key code" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Count, StringFormat={}{0:N0}}"
+                            Header="Key" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel
+            Grid.Row="1"
+            FlowDirection="RightToLeft"
+            Orientation="Horizontal">
+            <Button
+                Width="50"
+                Click="ButtonClose_Click"
+                Content="Close" />
+        </StackPanel>
+
+    </Grid>
+</mah:MetroWindow>

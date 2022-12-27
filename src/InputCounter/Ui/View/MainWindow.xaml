@@ -1,0 +1,382 @@
+﻿<mah:MetroWindow
+    x:Class="InputCounter.Ui.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:InputCounter.Ui.View"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:InputCounter.Ui.ViewModel"
+    Title="InputCounter"
+    Width="650"
+    Height="450"
+    mah:DialogParticipation.Register="{Binding}"
+    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+    BorderThickness="1"
+    Closing="MainWindow_OnClosing"
+    Loaded="MainWindow_OnLoaded"
+    TitleCharacterCasing="Normal"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource BorderStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="Current data"
+                    Style="{StaticResource Headline}" />
+
+                <Separator
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2" />
+
+                <Border Grid.Row="2" Grid.Column="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="Keyboard"
+                            Style="{StaticResource Headline}" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Today:" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding TotalCountKeyboard}" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Previous:" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding PreviousCountKeyboard}" />
+
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Progress:" />
+                        <mah:MetroProgressBar
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Height="18"
+                            Margin="3"
+                            BorderThickness="1"
+                            Foreground="DarkRed"
+                            Maximum="{Binding ProgressMaxKeyboard}"
+                            Minimum="0"
+                            Value="{Binding ProgressCurrentKeyboard}" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Content="{Binding TotalCountPercentageKeyboard}" />
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="Mouse"
+                            Style="{StaticResource Headline}" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Today:" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding TotalCountMouse}" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Previous:" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding PreviousCountMouse}" />
+
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Progress:" />
+                        <mah:MetroProgressBar
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Height="18"
+                            Margin="3"
+                            Foreground="DarkRed"
+                            Maximum="{Binding ProgressMaxMouse}"
+                            Minimum="0"
+                            Value="{Binding ProgressCurrentMouse}" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Content="{Binding TotalCountPercentageMouse}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Style="{StaticResource BorderStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="{Binding StatsHeader}"
+                    Style="{StaticResource Headline}" />
+
+                <Separator
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2" />
+
+                <Border Grid.Row="2" Grid.Column="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="Keyboard"
+                            Style="{StaticResource Headline}" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Total key strokes:" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding KeyboardStats.TotalCount}" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Max. key strokes:" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding KeyboardStats.MaxCount}" />
+
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Avg. key strokes:" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding KeyboardStats.AverageCount}" />
+
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Content="Most used key:" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding KeyboardStats.MostUsedKey}" />
+
+                        <Label
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Content="Least used key:" />
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding KeyboardStats.LeastUsedKey}" />
+
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="Keyboard"
+                            Style="{StaticResource Headline}" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Total clicks:" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding MouseStats.TotalCount}" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Max. clicks:" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding MouseStats.MaxCount}" />
+
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Avg. clicks:" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding MouseStats.AverageCount}" />
+
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Content="Total left clicks:" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding MouseStats.LeftCount}" />
+
+                        <Label
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Content="Total right clicks::" />
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding MouseStats.RightCount}" />
+
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <CheckBox
+            Grid.Row="2"
+            Margin="3"
+            Content="Always on top"
+            IsChecked="{Binding AlwaysOnTop}" />
+
+        <StackPanel
+            Grid.Row="2"
+            FlowDirection="RightToLeft"
+            Orientation="Horizontal">
+            <Button
+                Width="50"
+                Click="ButtonClose_Click"
+                Content="Close" />
+            <Button
+                Width="50"
+                Command="{Binding ShowDataCommand}"
+                Content="Data" />
+        </StackPanel>
+    </Grid>
+</mah:MetroWindow>
