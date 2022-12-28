@@ -238,6 +238,7 @@ internal sealed class AppDbContext : DbContext
             var minDate = await KeyboardClickCount.AsNoTracking().MinAsync(m => m.Day);
             var maxDate = await KeyboardClickCount.AsNoTracking().MaxAsync(m => m.Day);
             var dayRange = (maxDate - minDate).TotalDays + 1;
+            result.KeyboardStats.DateRange = $"{minDate:dd.MM.yyyy} - {maxDate:dd.MM.yyyy} - {dayRange:N0} day(s)";
 
             var totalCount = await KeyboardClickCount.AsNoTracking().SumAsync(s => s.Count);
 
@@ -248,7 +249,7 @@ internal sealed class AppDbContext : DbContext
 
             result.KeyboardStats.MaxCount = $"{maxEntry.Count:N0} - {maxEntry.Day:dd.MM.yyyy}";
             result.KeyboardStats.AverageCount = average.ToString("N0");
-            result.KeyboardStats.TotalCount = $"{totalCount:N0} // {minDate:dd.MM.yyyy} - {maxDate:dd.MM.yyyy} ({dayRange:N0})";
+            result.KeyboardStats.TotalCount = totalCount.ToString("N0");
         }
 
         if (await KeyboardKeyCount.AnyAsync())
@@ -268,6 +269,7 @@ internal sealed class AppDbContext : DbContext
             var minDate = await MouseClickCount.AsNoTracking().MinAsync(m => m.Day);
             var maxDate = await MouseClickCount.AsNoTracking().MaxAsync(m => m.Day);
             var dayRange = (maxDate - minDate).TotalDays + 1;
+            result.MouseStats.DateRange = $"{minDate:dd.MM.yyyy} - {maxDate:dd.MM.yyyy} - {dayRange:N0} day(s)";
 
             var maxEntry = await MouseClickCount.AsNoTracking().OrderByDescending(o => o.LeftCount)
                 .FirstOrDefaultAsync() ?? new MouseClickCountDbModel();
@@ -282,7 +284,7 @@ internal sealed class AppDbContext : DbContext
 
             result.MouseStats.MaxCount = $"{maxEntry.LeftCount:N0} - {maxEntry.Day:dd.MM.yyyy}";
             result.MouseStats.AverageCount = average.ToString("N0");
-            result.MouseStats.TotalCount = $"{total:N0} // {minDate:dd.MM.yyyy} - {maxDate:dd.MM.yyyy} ({dayRange:N0})";
+            result.MouseStats.TotalCount = total.ToString("N0");
             result.MouseStats.RightCount = totalRight.ToString("N0");
             result.MouseStats.LeftCount = totalLeft.ToString("N0");
         }

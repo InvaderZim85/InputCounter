@@ -68,6 +68,9 @@ internal sealed class ClickCount
     /// <returns>The percentage</returns>
     private static double CalculatePercentage(int today, int previous)
     {
+        if (today == 0 && previous == 0)
+            return 0;
+
         return 100d / previous * today;
     }
 }

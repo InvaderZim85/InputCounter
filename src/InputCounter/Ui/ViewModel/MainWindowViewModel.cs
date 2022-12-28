@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
@@ -48,7 +49,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
     public string TotalCountPercentageKeyboard
     {
         get => _totalCountPercentageKeyboard;
-        set => SetProperty(ref _totalCountPercentageKeyboard, value);
+        private set => SetProperty(ref _totalCountPercentageKeyboard, value);
     }
 
     /// <summary>
@@ -195,6 +196,20 @@ internal sealed class MainWindowViewModel : ViewModelBase
     #endregion
 
     /// <summary>
+    /// Backing field for <see cref="WindowHeader"/>
+    /// </summary>
+    private string _windowHeader = "Input Counter";
+
+    /// <summary>
+    /// Gets or sets the window header
+    /// </summary>
+    public string WindowHeader
+    {
+        get => _windowHeader;
+        set => SetProperty(ref _windowHeader, value);
+    }
+
+    /// <summary>
     /// Backing field for <see cref="StatsHeader"/>
     /// </summary>
     private string _statsHeader = "Statistics";
@@ -206,6 +221,34 @@ internal sealed class MainWindowViewModel : ViewModelBase
     {
         get => _statsHeader;
         private set => SetProperty(ref _statsHeader, value);
+    }
+
+    /// <summary>
+    /// Backing field for <see cref="StatsHeaderKeyboard"/>
+    /// </summary>
+    private string _statsHeaderKeyboard = "Keyboard";
+
+    /// <summary>
+    /// Gets or sets the header of the keyboard stats
+    /// </summary>
+    public string StatsHeaderKeyboard
+    {
+        get => _statsHeaderKeyboard;
+        private set => SetProperty(ref _statsHeaderKeyboard, value);
+    }
+
+    /// <summary>
+    /// Backing field for <see cref="StatsHeaderMouse"/>
+    /// </summary>
+    private string _statsHeaderMouse = "Mouse";
+
+    /// <summary>
+    /// Gets or sets the header of hte mouse stats
+    /// </summary>
+    public string StatsHeaderMouse
+    {
+        get => _statsHeaderMouse;
+        private set => SetProperty(ref _statsHeaderMouse, value);
     }
 
     /// <summary>
@@ -257,6 +300,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
     {
         try
         {
+            WindowHeader = $"Input Counter - v{Assembly.GetExecutingAssembly().GetName().Version}";
+
             // Add the events
             _dataManager.KeyboardClicked += (_, _) =>
             {
@@ -274,6 +319,12 @@ internal sealed class MainWindowViewModel : ViewModelBase
                 MouseStats = _dataManager.Statistics.MouseStats;
 
                 StatsHeader = $"Statistics - Last update: {DateTime.Now:dd.MM.yyyy HH:mm:ss}";
+                StatsHeaderKeyboard = string.IsNullOrEmpty(KeyboardStats.DateRange)
+                    ? "Keyboard"
+                    : $"Keyboard {KeyboardStats.DateRange}";
+                StatsHeaderMouse = string.IsNullOrEmpty(MouseStats.DateRange)
+                    ? "Mouse"
+                    : $"Mouse {MouseStats.DateRange}";
             };
 
             _dataManager.Start();

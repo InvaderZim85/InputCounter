@@ -48,4 +48,18 @@ internal class CommonStats : ObservableObject
         get => _averageCount;
         set => SetProperty(ref _averageCount, value);
     }
+
+    /// <summary>
+    /// Backing field for <see cref="DateRange"/>
+    /// </summary>
+    private string _dateRange = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the date range
+    /// </summary>
+    public string DateRange
+    {
+        get => _dateRange;
+        set => SetProperty(ref _dateRange, value);
+    }
 }

@@ -7,8 +7,8 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:InputCounter.Ui.ViewModel"
-    Title="InputCounter"
-    Width="650"
+    Title="{Binding WindowHeader}"
+    Width="550"
     Height="450"
     mah:DialogParticipation.Register="{Binding}"
     BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
@@ -225,7 +225,7 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Content="Keyboard"
+                            Content="{Binding StatsHeaderKeyboard}"
                             Style="{StaticResource Headline}" />
 
                         <Label
@@ -301,7 +301,7 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Content="Keyboard"
+                            Content="{Binding StatsHeaderMouse}"
                             Style="{StaticResource Headline}" />
 
                         <Label
