@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KeyCountImport": {
+      "commandName": "Project",
+      "commandLineArgs": "-s \"D:\\Dump\\KeyCountDatabase.db\" -t \"D:\\Dump\\InputCountDatabase.db\" -v -o"
+    }
+  }
+}
