@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>KeyCounter.ico</ApplicationIcon>
-    <AssemblyVersion>22.362.2.756</AssemblyVersion>
-    <FileVersion>22.362.2.756</FileVersion>
+    <AssemblyVersion>22.363.0.694</AssemblyVersion>
+    <FileVersion>22.363.0.694</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="KeyCounter.ico" />
