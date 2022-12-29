@@ -1,6 +1,7 @@
 # InputCounter
 
 [![Releases](https://img.shields.io/github/v/release/InvaderZim85/InputCounter)](https://github.com/InvaderZim85/InputCounter/releases/latest)
+[![License](https://img.shields.io/github/license/InvaderZim85/InputCounter)](https://github.com/InvaderZim85/InputCounter/blob/main/LICENSE)
 
 This is a small program which counts the keyboard strokes and the mouse clicks (left and right button).
 
