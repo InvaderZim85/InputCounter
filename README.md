@@ -2,6 +2,7 @@
 
 [![Releases](https://img.shields.io/github/v/release/InvaderZim85/InputCounter)](https://github.com/InvaderZim85/InputCounter/releases/latest)
 [![License](https://img.shields.io/github/license/InvaderZim85/InputCounter)](https://github.com/InvaderZim85/InputCounter/blob/main/LICENSE)
+![Version](https://img.shields.io/badge/.NET%20Version-.NET%207.0-green)
 
 This is a small program which counts the keyboard strokes and the mouse clicks (left and right button).
 
