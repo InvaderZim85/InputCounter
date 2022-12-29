@@ -29,3 +29,30 @@ I use Windows Defender and have had no problems so far
 ![DataWindow](images/details_002.png)
 
 ![DataWindow](images/details_003.png)
+
+## Import data from KeyCount
+
+If you've used the old [KeyCount](https://github.com/InvaderZim85/KeyCount) tool you can import your old data. There are two possible ways:
+
+1. Manual: Use the DB Browser
+2. Automatically: Use the *KeyCountImporter*
+
+With the manual process you've more flexibility in what you want to import. The automatically process is easier.
+
+### Automatic process
+
+To use the automatic process, you've to do the following:
+
+1. Navigate with powershell, cmd or windows terminal into the directory which contains the *KeyCountImporter* exe (*tools* directory)
+2. Start the program with the following parameters:
+    - `-s` / `--source` [Path of the KeyCount database]
+    - `-t` / `--target` [Path of the InputCounter database]
+    - `-o` / `--override` Add this switch to override the existing values. If you don't add this value, the values of the KeyCount will be added to the values of the InputCounter
+    - `v` / `--verbose` Add this switch to create a verbose log
+3. Done
+
+Here s small example:
+
+```powershell
+KeyCountImport.exe -s D:\Test\KeyCountDatabase.db -t D:\Test\InputCountDatabase.db -o -v
+```
