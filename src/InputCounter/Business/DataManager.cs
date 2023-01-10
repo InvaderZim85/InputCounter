@@ -22,6 +22,7 @@ namespace InputCounter.Business;
 internal sealed class DataManager
 {
     #region Events
+
     /// <summary>
     /// Occurs when the user hits a key on the keyboard
     /// </summary>
@@ -36,6 +37,7 @@ internal sealed class DataManager
     /// Occurs when the statistics were updated
     /// </summary>
     public event EventHandler? StatsUpdated;
+
     #endregion
 
     #region Hooks
@@ -49,6 +51,7 @@ internal sealed class DataManager
     /// The hook for the mouse
     /// </summary>
     private GlobalMouseHook? _mouseHook;
+
     #endregion
 
     /// <summary>
@@ -87,9 +90,9 @@ internal sealed class DataManager
     private DateTime _startDateMouse;
 
     /// <summary>
-    /// The date of the last statistics
+    /// Contains the hash value of the statistics
     /// </summary>
-    private DateTime _lastStatsDate;
+    private int _statsHashValue;
 
     /// <summary>
     /// Gets the click count values
@@ -115,19 +118,22 @@ internal sealed class DataManager
     }
 
     #region General
+
     /// <summary>
     /// Prepares the databases
     /// </summary>
     /// <returns>The awaitable task</returns>
-    public async Task PrepareDatabaseAsync()
+    public static async Task PrepareDatabaseAsync()
     {
         await using var context = new AppDbContext();
         await context.PrepareKeyCountTableAsync();
         await context.PrepareMouseCountTableAsync();
     }
+
     #endregion
 
     #region Start / stop
+
     /// <summary>
     /// Starts the queue consumer and the hooks
     /// </summary>
@@ -152,7 +158,7 @@ internal sealed class DataManager
 
             _mouseHook.MouseEvent += (_, e) =>
             {
-                if (e.Action is not (MouseActionType.LeftButtonDown or MouseActionType.RightButtonUp)) 
+                if (e.Action is not (MouseActionType.LeftButtonDown or MouseActionType.RightButtonUp))
                     return;
 
                 AddMouseAction(e.Action);
@@ -219,9 +225,11 @@ internal sealed class DataManager
         // Step 5: Clear the thread list
         _threads.Clear();
     }
+
     #endregion
 
     #region Add methods
+
     /// <summary>
     /// Adds the key to the queue
     /// </summary>
@@ -239,7 +247,7 @@ internal sealed class DataManager
         {
             ClickCountValues.TodayKeyboard++;
         }
-        
+
 
         _keyboardQueue.Enqueue(key);
     }
@@ -252,21 +260,31 @@ internal sealed class DataManager
     {
         if (_startDateMouse.Date != DateTime.Now.Date)
         {
-            ClickCountValues.PreviousMouse = ClickCountValues.TodayMouse;
-            ClickCountValues.TodayMouse = 1;
+            ClickCountValues.PreviousMouseLeft = ClickCountValues.TodayMouseLeft;
+            ClickCountValues.PreviousMouseRight = ClickCountValues.TodayMouseRight;
+
+            if (action == MouseActionType.LeftButtonDown)
+                ClickCountValues.TodayMouseLeft = 1;
+            else if (action == MouseActionType.RightButtonUp)
+                ClickCountValues.TodayMouseRight = 1;
 
             _startDateMouse = DateTime.Now;
         }
         else
         {
-            ClickCountValues.TodayMouse++;
+            if (action == MouseActionType.LeftButtonDown)
+                ClickCountValues.TodayMouseLeft++;
+            else if (action == MouseActionType.RightButtonUp)
+                ClickCountValues.TodayMouseRight++;
         }
-        
+
         _mouseQueue.Enqueue(action);
     }
+
     #endregion
 
     #region Consumer
+
     /// <summary>
     /// Consumes the keyboard queue
     /// </summary>
@@ -310,24 +328,30 @@ internal sealed class DataManager
             Thread.Sleep(50);
         }
     }
+
     #endregion
 
     #region Loading
+
     /// <summary>
     /// Loads the counts
     /// </summary>
     /// <returns>The awaitable task</returns>
     public async Task LoadCountsAsync()
     {
-         await using var context = new AppDbContext();
+        await using var context = new AppDbContext();
 
-         // Keyboard stats
-         ClickCountValues.PreviousKeyboard = await context.LoadCountAsync(StatisticType.Keyboard, DateType.Yesterday);
-         ClickCountValues.TodayKeyboard = await context.LoadCountAsync(StatisticType.Keyboard, DateType.Today);
+        // Keyboard stats
+        ClickCountValues.PreviousKeyboard = await context.LoadCountAsync(StatisticType.Keyboard, DateType.Yesterday);
+        ClickCountValues.TodayKeyboard = await context.LoadCountAsync(StatisticType.Keyboard, DateType.Today);
 
-         // Mouse stats
-         ClickCountValues.PreviousMouse = await context.LoadCountAsync(StatisticType.Mouse, DateType.Yesterday);
-         ClickCountValues.TodayMouse = await context.LoadCountAsync(StatisticType.Mouse, DateType.Today);
+        // Mouse stats
+        var (previousLeft, previousRight) = await context.LoadMouseCountAsync(DateType.Yesterday);
+        var (todayLeft, todayRight) = await context.LoadMouseCountAsync(DateType.Today);
+        ClickCountValues.PreviousMouseLeft = previousLeft;
+        ClickCountValues.PreviousMouseRight = previousRight;
+        ClickCountValues.TodayMouseLeft = todayLeft;
+        ClickCountValues.TodayMouseRight = todayRight;
     }
 
     /// <summary>
@@ -339,9 +363,15 @@ internal sealed class DataManager
         await using var context = new AppDbContext();
         Statistics = await context.LoadStatisticsAsync();
 
-        StatsUpdated?.Invoke(this, EventArgs.Empty);
+        var statsHash = Statistics.GetHashCode();
 
-        _lastStatsDate = DateTime.Now;
+        if (_statsHashValue == statsHash)
+            return;
+
+        _statsHashValue = statsHash;
+
+        StatsUpdated?.Invoke(this, EventArgs.Empty);
     }
+
     #endregion
 }

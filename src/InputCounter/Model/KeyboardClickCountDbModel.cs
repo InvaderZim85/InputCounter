@@ -25,4 +25,10 @@ internal sealed class KeyboardClickCountDbModel
     /// Gets or sets the count of the day
     /// </summary>
     public int Count { get; set; }
+
+    /// <summary>
+    /// Gets or sets the difference to the average value
+    /// </summary>
+    [NotMapped]
+    public double DiffToAverage { get; set; }
 }

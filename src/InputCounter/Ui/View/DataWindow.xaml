@@ -20,6 +20,7 @@
     <Window.DataContext>
         <viewModel:DataWindowViewModel />
     </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -28,36 +29,85 @@
 
         <TabControl Grid.Row="0">
             <TabItem Header="Keyboard clicks">
-                <DataGrid IsReadOnly="True" ItemsSource="{Binding KeyboardClickCount}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Day, StringFormat={}{0:dd.MM.yyyy}}"
-                            Header="Day" />
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Count, StringFormat={}{0:N0}}"
-                            Header="Key" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Label Content="Average:" />
+                        <Label Content="{Binding AverageKeyboardClickCount}" />
+                    </StackPanel>
+
+                    <Separator Grid.Row="1" />
+
+                    <DataGrid
+                        Grid.Row="2"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding KeyboardClickCount}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Day, StringFormat={}{0:dd.MM.yyyy}}"
+                                Header="Day" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Count, StringFormat={}{0:N0}}"
+                                Header="Key" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding DiffToAverage, StringFormat={}{0:N2}%}"
+                                Header="Diff. to average" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
             </TabItem>
             <TabItem Header="Mouse clicks">
-                <DataGrid IsReadOnly="True" ItemsSource="{Binding MouseClickCount}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Day, StringFormat={}{0:dd.MM.yyyy}}"
-                            Header="Day" />
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding LeftCount, StringFormat={}{0:N0}}"
-                            Header="Left" />
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding RightCount, StringFormat={}{0:N0}}"
-                            Header="Right" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Label Content="Average:" />
+                        <Label Content="{Binding AverageKeyboardClickCount}" />
+                    </StackPanel>
+
+                    <Separator Grid.Row="1" />
+
+                    <DataGrid
+                        Grid.Row="2"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding MouseClickCount}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Day, StringFormat={}{0:dd.MM.yyyy}}"
+                                Header="Day" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding LeftCount, StringFormat={}{0:N0}}"
+                                Header="Left" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding RightCount, StringFormat={}{0:N0}}"
+                                Header="Right" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding TotalCount, StringFormat={}{0:N0}}"
+                                Header="Total" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding DiffToAverage, StringFormat={}{0:N2}%}"
+                                Header="Diff. to average" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
             <TabItem Header="Used keys">
                 <DataGrid IsReadOnly="True" ItemsSource="{Binding KeyList}">

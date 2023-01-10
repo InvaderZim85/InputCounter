@@ -225,6 +225,19 @@ internal sealed class AppDbContext : DbContext
     }
 
     /// <summary>
+    /// Loads the mouse count of the desired date
+    /// </summary>
+    /// <param name="dateType">The date type</param>
+    /// <returns>The values</returns>
+    public async Task<(int LeftCount, int RightCount)> LoadMouseCountAsync(DateType dateType)
+    {
+        var date = dateType == DateType.Today ? DateTime.Now.Date : DateTime.Now.AddDays(-1).Date;
+
+        var values = await MouseClickCount.FirstOrDefaultAsync(f => f.Day.Date == date.Date);
+        return values == null ? (0, 0) : (values.LeftCount, values.RightCount);
+    }
+
+    /// <summary>
     /// Loads the statistics
     /// </summary>
     /// <returns>The statistics</returns>
@@ -265,25 +278,37 @@ internal sealed class AppDbContext : DbContext
 
         if (await MouseClickCount.AnyAsync())
         {
+            var tmpMouseClicks = await MouseClickCount.AsNoTracking().ToListAsync();
+
             // Day range
-            var minDate = await MouseClickCount.AsNoTracking().MinAsync(m => m.Day);
-            var maxDate = await MouseClickCount.AsNoTracking().MaxAsync(m => m.Day);
+            var minDate = tmpMouseClicks.Min(m => m.Day);
+            var maxDate = tmpMouseClicks.Max(m => m.Day);
             var dayRange = (maxDate - minDate).TotalDays + 1;
             result.MouseStats.DateRange = $"{minDate:dd.MM.yyyy} - {maxDate:dd.MM.yyyy} - {dayRange:N0} day(s)";
 
-            var maxEntry = await MouseClickCount.AsNoTracking().OrderByDescending(o => o.LeftCount)
-                .FirstOrDefaultAsync() ?? new MouseClickCountDbModel();
+            // Max values
+            var maxEntryTotal = tmpMouseClicks.MaxBy(m => m.TotalCount) ?? new MouseClickCountDbModel();
+            var maxEntryLeft = tmpMouseClicks.MaxBy(m => m.LeftCount) ?? new MouseClickCountDbModel();
+            var maxEntryRight = tmpMouseClicks.MaxBy(m => m.RightCount) ?? new MouseClickCountDbModel();
 
-            var average = await (from entry in MouseClickCount.AsNoTracking()
-                let avgTotal = entry.RightCount + entry.LeftCount
-                select avgTotal).AverageAsync();
+            result.MouseStats.MaxCount = $"{maxEntryTotal.TotalCount:N0} - {maxEntryTotal.Day:dd.MM.yyyy}";
+            result.MouseStats.MaxCountLeft = $"{maxEntryLeft.LeftCount:N0} - {maxEntryLeft.Day:dd.MM.yyyy}";
+            result.MouseStats.MaxCountRight = $"{maxEntryRight.RightCount:N0} - {maxEntryRight.Day:dd.MM.yyyy}";
 
-            var total = await MouseClickCount.AsNoTracking().SumAsync(s => s.LeftCount + s.RightCount);
-            var totalRight = await MouseClickCount.AsNoTracking().SumAsync(s => s.RightCount);
-            var totalLeft = await MouseClickCount.AsNoTracking().SumAsync(s => s.LeftCount);
+            // Average values
+            var averageTotal = tmpMouseClicks.Average(a => a.TotalCount);
+            var averageLeft = tmpMouseClicks.Average(a => a.LeftCount);
+            var averageRight = tmpMouseClicks.Average(a => a.RightCount);
 
-            result.MouseStats.MaxCount = $"{maxEntry.LeftCount:N0} - {maxEntry.Day:dd.MM.yyyy}";
-            result.MouseStats.AverageCount = average.ToString("N0");
+            result.MouseStats.AverageCount = averageTotal.ToString("N0");
+            result.MouseStats.AverageCountLeft = averageLeft.ToString("N0");
+            result.MouseStats.AverageCountRight = averageRight.ToString("N0");
+
+            // Total values
+            var total = tmpMouseClicks.Sum(s => s.TotalCount);
+            var totalRight = tmpMouseClicks.Sum(s => s.RightCount);
+            var totalLeft = tmpMouseClicks.Sum(s => s.LeftCount);
+
             result.MouseStats.TotalCount = total.ToString("N0");
             result.MouseStats.RightCount = totalRight.ToString("N0");
             result.MouseStats.LeftCount = totalLeft.ToString("N0");

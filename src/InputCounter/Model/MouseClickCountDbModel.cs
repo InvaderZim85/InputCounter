@@ -30,4 +30,16 @@ internal sealed class MouseClickCountDbModel
     /// Gets or sets the count of the day for a right click
     /// </summary>
     public int RightCount { get; set; }
+
+    /// <summary>
+    /// Gets the total count of the day (<see cref="LeftCount"/> + <see cref="RightCount"/>)
+    /// </summary>
+    [NotMapped]
+    public int TotalCount => LeftCount + RightCount;
+
+    /// <summary>
+    /// Gets or sets the difference to the average value
+    /// </summary>
+    [NotMapped]
+    public double DiffToAverage { get; set; }
 }

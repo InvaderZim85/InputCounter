@@ -51,7 +51,7 @@ To use the automatic process, you've to do the following:
     - `v` / `--verbose` Add this switch to create a verbose log
 3. Done
 
-Here s small example:
+Here a small example:
 
 ```powershell
 KeyCountImport.exe -s D:\Test\KeyCountDatabase.db -t D:\Test\InputCountDatabase.db -o -v

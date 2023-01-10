@@ -34,5 +34,29 @@ namespace InputCounter.Properties {
                 this["AlwaysOnTop"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double WindowPosX {
+            get {
+                return ((double)(this["WindowPosX"]));
+            }
+            set {
+                this["WindowPosX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double WindowPosY {
+            get {
+                return ((double)(this["WindowPosY"]));
+            }
+            set {
+                this["WindowPosY"] = value;
+            }
+        }
     }
 }

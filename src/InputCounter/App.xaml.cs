@@ -1,17 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using InputCounter.Common;
+using InputCounter.Ui.View;
 
-namespace InputCounter
+namespace InputCounter;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// The main window
     /// </summary>
-    public partial class App : Application
+    private MainWindow? _mainWindow;
+
+    /// <summary>
+    /// Occurs when the window will be started
+    /// </summary>
+    /// <param name="sender">The <see cref="App"/></param>
+    /// <param name="e">The event arguments</param>
+    private void App_OnStartup(object sender, StartupEventArgs e)
     {
+        Helper.InitLogger();
+
+        _mainWindow = new MainWindow();
+
+        Helper.SetWindowPosition(_mainWindow);
+
+        _mainWindow.Show();
+    }
+
+    /// <summary>
+    /// Occurs when the window will be closed
+    /// </summary>
+    /// <param name="sender">The <see cref="App"/></param>
+    /// <param name="e">The event arguments</param>
+    private void App_OnExit(object sender, ExitEventArgs e)
+    {
+        if (_mainWindow != null)
+            Helper.SaveWindowPosition(_mainWindow);
     }
 }
