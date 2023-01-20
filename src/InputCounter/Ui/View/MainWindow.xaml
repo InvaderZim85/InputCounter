@@ -302,7 +302,7 @@
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
+                            Grid.ColumnSpan="4"
                             Content="{Binding ViewProperties.StatsHeaderMouse}"
                             Style="{StaticResource Headline}" />
 
@@ -314,17 +314,17 @@
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            Content="Left"
+                            Content="Combined"
                             Style="{StaticResource HeadlineSemi}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="2"
-                            Content="Right"
+                            Content="Left"
                             Style="{StaticResource HeadlineSemi}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="3"
-                            Content="Combined"
+                            Content="Right"
                             Style="{StaticResource HeadlineSemi}" />
 
                         <Label
@@ -335,17 +335,17 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.LeftCount}" />
+                            Text="{Binding ViewProperties.MouseStats.TotalCount}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="2"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.RightCount}" />
+                            Text="{Binding ViewProperties.MouseStats.LeftCount}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="3"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.TotalCount}" />
+                            Text="{Binding ViewProperties.MouseStats.RightCount}" />
 
                         <Label
                             Grid.Row="3"
@@ -355,17 +355,17 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.MaxCountLeft}" />
+                            Text="{Binding ViewProperties.MouseStats.MaxCount}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="2"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.MaxCountRight}" />
+                            Text="{Binding ViewProperties.MouseStats.MaxCountLeft}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="3"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.MaxCount}" />
+                            Text="{Binding ViewProperties.MouseStats.MaxCountRight}" />
 
                         <Label
                             Grid.Row="4"
@@ -375,17 +375,17 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.AverageCountLeft}" />
+                            Text="{Binding ViewProperties.MouseStats.AverageCount}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="2"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.AverageCountRight}" />
+                            Text="{Binding ViewProperties.MouseStats.AverageCountLeft}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="3"
                             IsReadOnly="True"
-                            Text="{Binding ViewProperties.MouseStats.AverageCount}" />
+                            Text="{Binding ViewProperties.MouseStats.AverageCountRight}" />
                     </Grid>
                 </Border>
             </Grid>

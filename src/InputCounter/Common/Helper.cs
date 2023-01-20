@@ -75,7 +75,7 @@ internal static class Helper
                     return;
                 }
 
-                if (settings.WindowPosX > left) // The saved position is outside the visible area
+                if (settings.WindowPosX < left) // The saved position is outside the visible area
                 {
                     window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     return;

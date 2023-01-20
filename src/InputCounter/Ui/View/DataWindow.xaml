@@ -38,7 +38,7 @@
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="Average:" />
-                        <Label Content="{Binding AverageKeyboardClickCount}" />
+                        <Label Content="{Binding AverageKeyboardClickCount, StringFormat={}{0:N0}}" />
                     </StackPanel>
 
                     <Separator Grid.Row="1" />
@@ -75,7 +75,7 @@
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="Average:" />
-                        <Label Content="{Binding AverageKeyboardClickCount}" />
+                        <Label Content="{Binding AverageMouseClickCount, StringFormat={}{0:N0}}" />
                     </StackPanel>
 
                     <Separator Grid.Row="1" />
