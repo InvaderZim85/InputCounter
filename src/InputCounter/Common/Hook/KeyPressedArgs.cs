@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace InputCounter.Common.Hook;
 
-public class KeyPressedArgs : EventArgs
+/// <summary>
+/// Provides the keyboard events.
+/// </summary>
+/// <param name="key">The key which was pressed.</param>
+public class KeyPressedArgs(Key key) : EventArgs
 {
-    public Key Key { get; }
-
-    public KeyPressedArgs(Key key)
-    {
-        Key = key;
-    }
+    /// <summary>
+    /// Gets the key which was pressed.
+    /// </summary>
+    public Key Key { get; } = key;
 }

@@ -36,7 +36,7 @@ internal class InputDataManager
     /// Loads the list with the used keys
     /// </summary>
     /// <returns>The list with the used keys</returns>
-    public Task<List<KeyboardKeyCountDbModel>> LoadKeyCountAsync()
+    public static Task<List<KeyboardKeyCountDbModel>> LoadKeyCountAsync()
     {
         using var context = new AppDbContext();
         return context.KeyboardKeyCount.AsNoTracking().OrderByDescending(o => o.KeyCode).ToListAsync();
@@ -46,7 +46,7 @@ internal class InputDataManager
     /// Loads the click count data of the mouse
     /// </summary>
     /// <returns>The click count data</returns>
-    public async Task<List<MouseClickCountDbModel>> LoadClickCountMouseAsync()
+    public static async Task<List<MouseClickCountDbModel>> LoadClickCountMouseAsync()
     {
         await using var context = new AppDbContext();
         var data = await context.MouseClickCount.AsNoTracking().OrderByDescending(o => o.Day).ToListAsync();

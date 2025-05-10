@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.Input;
+using InputCounter.Business;
+using InputCounter.Common;
+using InputCounter.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using InputCounter.Business;
-using InputCounter.Common;
-using InputCounter.Model;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace InputCounter.Ui.ViewModel;
 
 /// <summary>
 /// Provides the logic for the <see cref="View.DataWindow"/>
 /// </summary>
-internal class DataWindowViewModel : ViewModelBase
+internal sealed partial class DataWindowViewModel : ViewModelBase
 {
     /// <summary>
     /// The instance for the interaction with the data
@@ -22,79 +22,34 @@ internal class DataWindowViewModel : ViewModelBase
     private readonly InputDataManager _manager = new();
 
     /// <summary>
-    /// Backing field for <see cref="KeyboardClickCount"/>
+    /// Gets or sets the click count.
     /// </summary>
-    private ObservableCollection<KeyboardClickCountDbModel> _keyboardClickCount = new();
-
-    /// <summary>
-    /// Gets or sets the keyboard click count
-    /// </summary>
-    public ObservableCollection<KeyboardClickCountDbModel> KeyboardClickCount
-    {
-        get => _keyboardClickCount;
-        private set => SetProperty(ref _keyboardClickCount, value);
-    }
-
-    /// <summary>
-    /// Backing field for <see cref="AverageKeyboardClickCount"/>
-    /// </summary>
-    private int _averageKeyboardClickCount;
+    [ObservableProperty]
+    private ObservableCollection<KeyboardClickCountDbModel> _keyboardClickCount = [];
 
     /// <summary>
     /// Gets or sets the average keyboard click count
     /// </summary>
-    public int AverageKeyboardClickCount
-    {
-        get => _averageKeyboardClickCount;
-        set => SetProperty(ref _averageKeyboardClickCount, value);
-    }
-
-    /// <summary>
-    /// Backing field for <see cref="KeyList"/>
-    /// </summary>
-    private ObservableCollection<KeyboardKeyCountDbModel> _keyList = new();
+    [ObservableProperty]
+    private int _averageKeyboardClickCount;
 
     /// <summary>
     /// Gets or sets the keyboard list
     /// </summary>
-    public ObservableCollection<KeyboardKeyCountDbModel> KeyList
-    {
-        get => _keyList;
-        private set => SetProperty(ref _keyList, value);
-    }
-
-    /// <summary>
-    /// Backing field for <see cref="MouseClickCount"/>
-    /// </summary>
-    private ObservableCollection<MouseClickCountDbModel> _mouseClickCount = new();
+    [ObservableProperty]
+    private ObservableCollection<KeyboardKeyCountDbModel> _keyList = [];
 
     /// <summary>
     /// Gets or sets the mouse click count
     /// </summary>
-    public ObservableCollection<MouseClickCountDbModel> MouseClickCount
-    {
-        get => _mouseClickCount;
-        private set => SetProperty(ref _mouseClickCount, value);
-    }
-
-    /// <summary>
-    /// Backing field for <see cref="AverageMouseClickCount"/>
-    /// </summary>
-    private int _averageMouseClickCount;
+    [ObservableProperty]
+    private ObservableCollection<MouseClickCountDbModel> _mouseClickCount = [];
 
     /// <summary>
     /// Gets or sets the average mouse click count
     /// </summary>
-    public int AverageMouseClickCount
-    {
-        get => _averageMouseClickCount;
-        set => SetProperty(ref _averageMouseClickCount, value);
-    }
-
-    /// <summary>
-    /// The command to reload the data
-    /// </summary>
-    public ICommand ReloadCommand => new AsyncRelayCommand(LoadDataAsync);
+    [ObservableProperty] 
+    private int _averageMouseClickCount;
 
     /// <summary>
     /// Loads the data
@@ -108,9 +63,9 @@ internal class DataWindowViewModel : ViewModelBase
             KeyboardClickCount = await Helper.ExecuteLoadFuncAsync(_manager.LoadClickCountKeyboardAsync);
             AverageKeyboardClickCount = (int)KeyboardClickCount.Average(a => a.Count);
 
-            KeyList = await Helper.ExecuteLoadFuncAsync(_manager.LoadKeyCountAsync);
+            KeyList = await Helper.ExecuteLoadFuncAsync(InputDataManager.LoadKeyCountAsync);
 
-            MouseClickCount = await Helper.ExecuteLoadFuncAsync(_manager.LoadClickCountMouseAsync);
+            MouseClickCount = await Helper.ExecuteLoadFuncAsync(InputDataManager.LoadClickCountMouseAsync);
             AverageMouseClickCount = (int)MouseClickCount.Average(a => a.TotalCount);
         }
         catch (Exception ex)

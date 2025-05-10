@@ -62,35 +62,42 @@ internal static class Helper
         else
         {
             // NOTE: The following code is needed for setups with multiple displays
-            
-            // Before we set the window position, let's check if the position is within the visible area
-            // Step 1: Check the left (only when the x-position is negative)
-            if (settings.WindowPosX < 0)
-            {
-                // The window was closed when it was on the left screen
-                var left = SystemParameters.VirtualScreenLeft; // the max. left position
-                if (left == 0) // There is no "left display"
-                {
-                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    return;
-                }
 
-                if (settings.WindowPosX < left) // The saved position is outside the visible area
-                {
-                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    return;
-                }
-            }
-            else if (settings.WindowPosX >= 0)
+            switch (settings.WindowPosX)
             {
-                // Now we will check the right
-                var right = SystemParameters.VirtualScreenWidth - (SystemParameters.VirtualScreenLeft < 0
-                    ? SystemParameters.VirtualScreenLeft * -1
-                    : 0);
-                if (settings.WindowPosX > right) // The saved position is outside the visible area
+                // Before we set the window position, let's check if the position is within the visible area
+                // Step 1: Check the left (only when the x-position is negative)
+                case < 0:
                 {
-                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    return;
+                    // The window was closed when it was on the left screen
+                    var left = SystemParameters.VirtualScreenLeft; // the max. left position
+                    if (left == 0) // There is no "left display"
+                    {
+                        window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        return;
+                    }
+
+                    if (settings.WindowPosX < left) // The saved position is outside the visible area
+                    {
+                        window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        return;
+                    }
+
+                    break;
+                }
+                case >= 0:
+                {
+                    // Now we will check the right
+                    var right = SystemParameters.VirtualScreenWidth - (SystemParameters.VirtualScreenLeft < 0
+                        ? SystemParameters.VirtualScreenLeft * -1
+                        : 0);
+                    if (settings.WindowPosX > right) // The saved position is outside the visible area
+                    {
+                        window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        return;
+                    }
+
+                    break;
                 }
             }
 

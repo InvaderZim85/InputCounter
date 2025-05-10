@@ -72,7 +72,7 @@ internal sealed class DataManager
     /// <summary>
     /// Contains the list with the threads
     /// </summary>
-    private readonly List<Thread> _threads = new();
+    private readonly List<Thread> _threads = [];
 
     /// <summary>
     /// Contains the value which indicates if the "stop" was requested
@@ -263,19 +263,29 @@ internal sealed class DataManager
             ClickCountValues.PreviousMouseLeft = ClickCountValues.TodayMouseLeft;
             ClickCountValues.PreviousMouseRight = ClickCountValues.TodayMouseRight;
 
-            if (action == MouseActionType.LeftButtonDown)
-                ClickCountValues.TodayMouseLeft = 1;
-            else if (action == MouseActionType.RightButtonUp)
-                ClickCountValues.TodayMouseRight = 1;
+            switch (action)
+            {
+                case MouseActionType.LeftButtonDown:
+                    ClickCountValues.TodayMouseLeft = 1;
+                    break;
+                case MouseActionType.RightButtonUp:
+                    ClickCountValues.TodayMouseRight = 1;
+                    break;
+            }
 
             _startDateMouse = DateTime.Now;
         }
         else
         {
-            if (action == MouseActionType.LeftButtonDown)
-                ClickCountValues.TodayMouseLeft++;
-            else if (action == MouseActionType.RightButtonUp)
-                ClickCountValues.TodayMouseRight++;
+            switch (action)
+            {
+                case MouseActionType.LeftButtonDown:
+                    ClickCountValues.TodayMouseLeft++;
+                    break;
+                case MouseActionType.RightButtonUp:
+                    ClickCountValues.TodayMouseRight++;
+                    break;
+            }
         }
 
         _mouseQueue.Enqueue(action);
@@ -290,20 +300,27 @@ internal sealed class DataManager
     /// </summary>
     private async void ConsumeKeyboardQueue()
     {
-        while (!_stopRequested)
+        try
         {
-            while (!_keyboardQueue.IsEmpty)
+            while (!_stopRequested)
             {
-                await using var context = new AppDbContext();
-
-                while (_keyboardQueue.TryDequeue(out var key))
+                while (!_keyboardQueue.IsEmpty)
                 {
-                    await context.InsertKeyAsync(key);
-                }
-            }
+                    await using var context = new AppDbContext();
 
-            // Wait 50 milliseconds before the next try
-            Thread.Sleep(50);
+                    while (_keyboardQueue.TryDequeue(out var key))
+                    {
+                        await context.InsertKeyAsync(key);
+                    }
+                }
+
+                // Wait 50 milliseconds before the next try
+                Thread.Sleep(50);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error while consuming the keyboard queue.");
         }
     }
 
@@ -312,20 +329,27 @@ internal sealed class DataManager
     /// </summary>
     private async void ConsumeMouseQueue()
     {
-        while (!_stopRequested)
+        try
         {
-            while (!_mouseQueue.IsEmpty)
+            while (!_stopRequested)
             {
-                await using var context = new AppDbContext();
-
-                while (_mouseQueue.TryDequeue(out var message))
+                while (!_mouseQueue.IsEmpty)
                 {
-                    await context.InsertMouseActionAsync(message);
-                }
-            }
+                    await using var context = new AppDbContext();
 
-            // Wait 50 milliseconds before the next try
-            Thread.Sleep(50);
+                    while (_mouseQueue.TryDequeue(out var message))
+                    {
+                        await context.InsertMouseActionAsync(message);
+                    }
+                }
+
+                // Wait 50 milliseconds before the next try
+                Thread.Sleep(50);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error while consuming the mouse queue.");
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using InputCounter.Business;
 using InputCounter.Common.Enums;
@@ -13,7 +14,7 @@ namespace InputCounter.Ui.ViewModel;
 /// <summary>
 /// Provides the logic for <see cref="MainWindow"/>
 /// </summary>
-internal sealed class MainWindowViewModel : ViewModelBase
+internal sealed partial class MainWindowViewModel : ViewModelBase
 {
     /// <summary>
     /// The instance for the interaction with the data
@@ -21,25 +22,18 @@ internal sealed class MainWindowViewModel : ViewModelBase
     private readonly DataManager _dataManager = new();
 
     /// <summary>
-    /// Backing field for <see cref="Properties"/>
-    /// </summary>
-    private MainWindowProperties _viewProperties = new();
-
-    /// <summary>
     /// Gets or sets the properties which are used by the <see cref="MainWindow"/>
     /// </summary>
-    public MainWindowProperties ViewProperties
-    {
-        get => _viewProperties;
-        private set => SetProperty(ref _viewProperties, value);
-    }
+    [ObservableProperty]
+    private MainWindowProperties _viewProperties = new();
 
     #region Commands
 
     /// <summary>
-    /// The command to open the data window
+    /// Opens the data window.
     /// </summary>
-    public ICommand ShowDataCommand => new RelayCommand(() =>
+    [RelayCommand]
+    private void ShowData()
     {
         if (ViewProperties.AlwaysOnTop && Application.Current.MainWindow != null)
             Application.Current.MainWindow.Topmost = false;
@@ -49,7 +43,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
         if (ViewProperties.AlwaysOnTop && Application.Current.MainWindow != null)
             Application.Current.MainWindow.Topmost = true;
-    });
+    }
     #endregion
 
     /// <summary>
